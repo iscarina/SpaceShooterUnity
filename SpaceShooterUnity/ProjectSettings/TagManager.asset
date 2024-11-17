@@ -8,6 +8,10 @@ TagManager:
   - DisparoEnemigo
   - DisparoPlayer
   - DestruyeObjets
+  - PickupEscudo
+  - PickupVida
+  - PickupRockets
+  - PickupVelocidad
   layers:
   - Default
   - TransparentFX

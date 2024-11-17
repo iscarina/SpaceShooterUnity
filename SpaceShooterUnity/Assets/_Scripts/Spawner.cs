@@ -9,6 +9,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private TextMeshProUGUI textoOleadas;
 
+    public static int deadEnemies;
+
     void Start()
     {
         StartCoroutine(SpawnEnemies());
