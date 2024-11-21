@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 336d16cb8a493b042bbaaca354815b12, type: 3}
+  m_Name: Nivel_2
+  m_EditorClassIdentifier: 
+  enemiesPrefabs:
+  - {fileID: 4564701832499194447, guid: adece54cd4d6b2244883d94e5dec5a8e, type: 3}
+  - {fileID: 6624966763568257719, guid: 943228db1e1db734697b3cc6ffd802e9, type: 3}
+  waves: 5
+  enemiesNumber: 0a0000000c0000000c0000000f0000000f000000
+  enemiesDelay:
+  - 2
+  - 2
+  - 2
+  - 2
+  - 2

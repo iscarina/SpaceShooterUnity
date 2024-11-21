@@ -5,10 +5,28 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void LifeChangeHandler(float newLife);
+    public event LifeChangeHandler OnLifeChange;
 
+    private float _life;
+    private float vidaMaxima = 10;
+    public float life
+    {
+        get => _life;
+        set
+        {
+            _life = value;
+            OnLifeChange?.Invoke(_life); // Disparar evento al cambiar la vida
+        }
+    }
+
+    [Header("Basics")]
     [SerializeField] private float speed;
     [SerializeField] private GameObject disparoPrefab;
+    [SerializeField] private float ratioDisparo;
+    [SerializeField] private GameObject escudo;
 
+    [Header("SpawnPoints")]
     [SerializeField] private GameObject spawnPoint1;
     [SerializeField] private GameObject spawnPoint2;
     [SerializeField] private GameObject spawnPoint3;
@@ -17,24 +35,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject spawnPoint6;
     [SerializeField] private GameObject spawnPoint7;
 
-    [SerializeField] private float ratioDisparo;
-
-    [SerializeField] private GameObject escudo;
-
+    [Header("UI")]
     [SerializeField] private TextMeshProUGUI vidaTexto;
+    [SerializeField] private TextMeshProUGUI pointsUI;
+    [SerializeField] private GameObject gameOver;
 
     private bool tieneEscudo = false;
 
-    private float vida = 10;
-    private float vidaMaxima = 10;
-
     private float temporizador = 0.5f;
+
+    private float crashShip = 2f;
 
     private int pickUpRockets = 0;
 
+    public static int score = 0;
+
+    //Rayo
+    private bool isOnRay = false;
+    private float timeSinceLastDamage = 0f; 
+    private float damageInterval = 0.3f; 
+
     void Start()
     {
-        ActulizaVida();
+        OnLifeChange += UpdateLife;
+        life = 10;
     }
 
     void Update()
@@ -42,6 +66,10 @@ public class PlayerController : MonoBehaviour
         Movimiento();
         DelimitaMovimiento();
         Disparar();
+        if (isOnRay)
+        {
+            RayDamage();
+        }
     }
 
     void Movimiento()
@@ -90,19 +118,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("DisparoEnemigo") || collision.gameObject.CompareTag("FighterEnemy"))
+        if (collision.gameObject.CompareTag("DisparoEnemigo") || collision.gameObject.CompareTag("Enemy"))
         {
             if (!tieneEscudo)
             {
-                vida -= 1;
-                ActulizaVida();
-                Destroy(collision.gameObject);
-
-                if (vida <= 0)
+                if (collision.gameObject.CompareTag("DisparoEnemigo"))
                 {
-                    ActulizaVida();
-                    Destroy(this.gameObject);
+                    life -= collision.gameObject.GetComponent<Disparo>().damage;
                 }
+                else
+                {
+                    life -= crashShip;
+                }
+
+                Destroy(collision.gameObject);
 
                 Spawner.deadEnemies++;
             }
@@ -112,9 +141,35 @@ public class PlayerController : MonoBehaviour
                 tieneEscudo = false;
             }
         }
+        else if (collision.gameObject.CompareTag("Ray"))
+        {
+            isOnRay = true;
+        }
 
         PickUps(collision);
 
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ray"))
+        {
+            isOnRay = false;
+        }
+    }
+
+    void RayDamage()
+    {
+        timeSinceLastDamage += Time.deltaTime;
+
+        if (timeSinceLastDamage >= damageInterval)
+        {
+            // Aplicar daño
+            life -= 1f;
+
+            // Resetear el temporizador
+            timeSinceLastDamage = 0f;
+        }
     }
 
     void PickUps(Collider2D collision)
@@ -127,10 +182,9 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("PickupVida"))
         {
-            if (vida < vidaMaxima)
+            if (life < vidaMaxima)
             {
-                vida++;
-                ActulizaVida();
+                life++;
                 Destroy(collision.gameObject);
             }
         }
@@ -147,9 +201,20 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void ActulizaVida()
+    void UpdateLife(float life)
     {
-        vidaTexto.text = "Vida: " + vida;
+        vidaTexto.text = "Vida: " + life;
+        if (life <= 0)
+        {
+            gameOver.SetActive(true);
+            Destroy(this.gameObject);
+        }
+
+    }
+
+    void UpdateScore()
+    {
+        pointsUI.text = "Score: " + score;
     }
 
 }

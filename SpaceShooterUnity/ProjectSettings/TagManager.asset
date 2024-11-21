@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - FighterEnemy
   - DisparoEnemigo
   - DisparoPlayer
   - DestruyeObjets
@@ -12,6 +11,8 @@ TagManager:
   - PickupVida
   - PickupRockets
   - PickupVelocidad
+  - Enemy
+  - Ray
   layers:
   - Default
   - TransparentFX

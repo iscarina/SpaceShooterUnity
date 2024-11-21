@@ -6,6 +6,10 @@ public class DestruyeObjects : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+        if (!collision.gameObject.CompareTag("Ray"))
+        {
+            Destroy(collision.gameObject);
+        }
+        
     }
 }

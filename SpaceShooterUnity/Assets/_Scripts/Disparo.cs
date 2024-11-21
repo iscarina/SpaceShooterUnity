@@ -5,16 +5,8 @@ using UnityEngine;
 public class Disparo : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
-    [SerializeField] private Vector3 direccion;
+    [SerializeField] protected float speed = 6f;
+    [SerializeField] public float damage = 1f;
+    [SerializeField] protected Vector3 direccion = new Vector3(-1, 0, 0);
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        transform.Translate(direccion * speed * Time.deltaTime);
-    }
 }
