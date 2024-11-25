@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public event LifeChangeHandler OnLifeChange;
 
     private float _life;
-    private float vidaMaxima = 10;
+    private float vidaMaxima = 20;
     public float life
     {
         get => _life;
@@ -40,6 +40,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsUI;
     [SerializeField] private GameObject gameOver;
 
+    [Header("RED")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Color hitColor = Color.red;
+    [SerializeField] private float flashDuration = 0.2f;
+    private bool isInvulnerable = false;
+
+    private Color originalColor;
+
     private bool tieneEscudo = false;
 
     private float temporizador = 0.5f;
@@ -58,7 +66,13 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         OnLifeChange += UpdateLife;
-        life = 10;
+        life = 20;
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        originalColor = spriteRenderer.color;
     }
 
     void Update()
@@ -93,20 +107,20 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && temporizador > ratioDisparo)
         {
-            Instantiate(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
-            Instantiate(disparoPrefab, spawnPoint2.transform.position, Quaternion.identity);
+            PoolManager.SpawnObject(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
+            PoolManager.SpawnObject(disparoPrefab, spawnPoint2.transform.position, Quaternion.identity);
 
             if (pickUpRockets >= 1)
             {
-                Instantiate(disparoPrefab, spawnPoint3.transform.position, Quaternion.identity);
-                Instantiate(disparoPrefab, spawnPoint4.transform.position, Quaternion.identity);
+                PoolManager.SpawnObject(disparoPrefab, spawnPoint3.transform.position, Quaternion.identity);
+                PoolManager.SpawnObject(disparoPrefab, spawnPoint4.transform.position, Quaternion.identity);
                 if (pickUpRockets > 1)
                 {
-                    Instantiate(disparoPrefab, spawnPoint5.transform.position, Quaternion.identity);
-                    Instantiate(disparoPrefab, spawnPoint6.transform.position, Quaternion.identity);
+                    PoolManager.SpawnObject(disparoPrefab, spawnPoint5.transform.position, Quaternion.identity);
+                    PoolManager.SpawnObject(disparoPrefab, spawnPoint6.transform.position, Quaternion.identity);
                     if (pickUpRockets > 2)
                     {
-                        Instantiate(disparoPrefab, spawnPoint7.transform.position, Quaternion.identity);
+                        PoolManager.SpawnObject(disparoPrefab, spawnPoint7.transform.position, Quaternion.identity);
                     }
                 }
                 
@@ -122,16 +136,21 @@ public class PlayerController : MonoBehaviour
         {
             if (!tieneEscudo)
             {
-                if (collision.gameObject.CompareTag("DisparoEnemigo"))
+                if (!isInvulnerable) //Tiempo cortesia para que sea mas justo si le hacen daño en 0.1s no le pueden volver a hacer.
                 {
-                    life -= collision.gameObject.GetComponent<Disparo>().damage;
+                    isInvulnerable = true;
+                
+                    if (collision.gameObject.CompareTag("DisparoEnemigo"))
+                    {
+                        life -= collision.gameObject.GetComponent<Disparo>().damage;
+                    }
+                    else
+                    {
+                        life -= crashShip;
+                    }
+                    StartCoroutine(FlashRed());
                 }
-                else
-                {
-                    life -= crashShip;
-                }
-
-                Destroy(collision.gameObject);
+                PoolManager.ReturnObjectToPool(collision.gameObject);
 
                 Spawner.deadEnemies++;
             }
@@ -148,6 +167,16 @@ public class PlayerController : MonoBehaviour
 
         PickUps(collision);
 
+    }
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = hitColor;
+        yield return new WaitForSeconds(flashDuration);
+        spriteRenderer.color = originalColor;
+        yield return new WaitForSeconds(0.1f); //Tiempo cortesia para que sea mas justo.
+
+        isInvulnerable = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -178,25 +207,25 @@ public class PlayerController : MonoBehaviour
         {
             escudo.SetActive(true);
             tieneEscudo = true;
-            Destroy(collision.gameObject);
+            PoolManager.ReturnObjectToPool(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("PickupVida"))
         {
             if (life < vidaMaxima)
             {
                 life++;
-                Destroy(collision.gameObject);
+                PoolManager.ReturnObjectToPool(collision.gameObject);
             }
         }
         else if (collision.gameObject.CompareTag("PickupVelocidad"))
         {
             ratioDisparo = ratioDisparo - 0.1f;
-            Destroy(collision.gameObject);
+            PoolManager.ReturnObjectToPool(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("PickupRockets"))
         {
             pickUpRockets++;
-            Destroy(collision.gameObject);
+            PoolManager.ReturnObjectToPool(collision.gameObject);
         }
 
     }

@@ -13,6 +13,8 @@ public class EnemyBase : MonoBehaviour
 
     [SerializeField] protected int score;
 
+    [SerializeField] GameObject SpriteVisual;
+
     [Header("Move in Y")]
     protected float nextMoveTime = 0f;
     protected float moveDuration = 2f;
@@ -21,6 +23,8 @@ public class EnemyBase : MonoBehaviour
 
     [SerializeField] protected float minTimeBetweenMove;
     [SerializeField] protected float maxTimeBetweenMove;
+
+    private Color originalColor;
 
     public virtual void TakeDamage(float amount)
     {
@@ -43,8 +47,21 @@ public class EnemyBase : MonoBehaviour
         if (collision.gameObject.CompareTag("DisparoPlayer"))
         {
             TakeDamage(collision.gameObject.GetComponent<Disparo>().damage);
-            Destroy(collision.gameObject);
+            PoolManager.ReturnObjectToPool(collision.gameObject);
+            StartCoroutine(FlashRed());
         }
+    }
+
+    private IEnumerator FlashRed()
+    {
+
+        Color customColor = new Color(255f / 255f, 83f / 255f, 83f / 255f);
+
+        SpriteVisual.GetComponent<SpriteRenderer>().color = customColor;
+
+        yield return new WaitForSeconds(0.2f);
+
+        SpriteVisual.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     //Para que se mueva en Y de vez en cuando (se ha de llamar desde cada enemigo en caso de querer moverse en Y)
@@ -81,7 +98,7 @@ public class EnemyBase : MonoBehaviour
 
         if (powerUpPrefab != null)
         {
-            Instantiate(powerUpPrefab, transform.position, Quaternion.identity);
+            PoolManager.SpawnObject(powerUpPrefab, transform.position, Quaternion.identity);
         }
 
     }

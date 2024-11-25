@@ -8,7 +8,13 @@ public class FighterEnemy : EnemyBase
     [SerializeField] private GameObject spawnPoint2;
     [SerializeField] private GameObject disparoPrefab;
 
-    void Start()
+    //void Start()
+    //{
+    //    SetNextMoveTime();
+    //    StartCoroutine(Disparar());
+    //}
+
+    private void OnEnable()
     {
         SetNextMoveTime();
         StartCoroutine(Disparar());
@@ -31,11 +37,11 @@ public class FighterEnemy : EnemyBase
 
             if (spawnPointIndex == 0)
             {
-                Instantiate(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
+                PoolManager.SpawnObject(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
             }
             else
             {
-                Instantiate(disparoPrefab, spawnPoint2.transform.position, Quaternion.identity);
+                PoolManager.SpawnObject(disparoPrefab, spawnPoint2.transform.position, Quaternion.identity);
             }
 
             yield return new WaitForSeconds(shotTime);

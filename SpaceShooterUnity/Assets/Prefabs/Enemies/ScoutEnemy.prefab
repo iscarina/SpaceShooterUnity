@@ -199,6 +199,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7291093611317832719}
+  - component: {fileID: 3585328814813227140}
+  - component: {fileID: 4524245850373170557}
   m_Layer: 0
   m_Name: ScoutEnemy
   m_TagString: Untagged
@@ -224,6 +226,75 @@ Transform:
   - {fileID: 4958006522774591357}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3585328814813227140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6293647256768859660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e5baa782c528949ac5d761514e7b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 4
+  speed: 0.5
+  shotTime: 5
+  score: 25
+  SpriteVisual: {fileID: 2139892770761138487}
+  minTimeBetweenMove: 6
+  maxTimeBetweenMove: 8
+  projectilePrefab: {fileID: 6547992577606873146, guid: d6db2d011023b194983795b6abd828a8, type: 3}
+  projectilesPerBurst: 10
+  burstAngle: 180
+  intervaloRafaga: 0.1
+  spawnPoint: {fileID: 8790105431783952551}
+--- !u!61 &4524245850373170557
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6293647256768859660}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.072165966, y: 0.000000059604645}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5921068, y: 1.0251012}
+  m_EdgeRadius: 0
 --- !u!1 &8790105431783952551
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +320,7 @@ Transform:
   m_GameObject: {fileID: 8790105431783952551}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.264, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

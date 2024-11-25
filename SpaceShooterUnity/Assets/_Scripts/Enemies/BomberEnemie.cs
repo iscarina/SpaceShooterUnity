@@ -7,12 +7,17 @@ public class BomberEnemie : EnemyBase
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] private GameObject disparoPrefab;
 
-    void Start()
+    //void Start()
+    //{
+    //    SetNextMoveTime();
+    //    StartCoroutine(Disparar());
+    //}
+
+    private void OnEnable()
     {
         SetNextMoveTime();
         StartCoroutine(Disparar());
     }
-
     void Update()
     {
         transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
@@ -26,7 +31,7 @@ public class BomberEnemie : EnemyBase
     {
         while (true)
         {
-           Instantiate(disparoPrefab, spawnPoint.transform.position, Quaternion.identity);
+            PoolManager.SpawnObject(disparoPrefab, spawnPoint.transform.position, Quaternion.identity);
 
             yield return new WaitForSeconds(shotTime);
         }

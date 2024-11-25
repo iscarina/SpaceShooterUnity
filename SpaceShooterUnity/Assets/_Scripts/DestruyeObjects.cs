@@ -8,7 +8,7 @@ public class DestruyeObjects : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Ray"))
         {
-            Destroy(collision.gameObject);
+            PoolManager.ReturnObjectToPool(collision.gameObject);
         }
         
     }

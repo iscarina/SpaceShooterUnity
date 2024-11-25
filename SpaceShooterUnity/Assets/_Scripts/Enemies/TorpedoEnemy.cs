@@ -9,7 +9,13 @@ public class TorpedoEnemy : EnemyBase
 
     private Transform player;  // Referencia al jugador
 
-    void Start()
+    //void Start()
+    //{
+    //    player = GameObject.FindGameObjectWithTag("Player").transform;
+    //    StartCoroutine(MoveAndCharge());
+    //}
+
+    void OnEnable()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(MoveAndCharge());
@@ -22,6 +28,7 @@ public class TorpedoEnemy : EnemyBase
         while (Time.time < moveEndTime)
         {
             transform.Translate(Vector3.left * Random.Range(2, 5) * Time.deltaTime);
+
             yield return null;
         }
 
@@ -39,7 +46,7 @@ public class TorpedoEnemy : EnemyBase
         }
 
         // Cargar hacia el jugador tomando como referencia el morro de la nave
-        while (true)
+        while (this.gameObject.activeInHierarchy)
         {
             transform.Translate(Vector3.left * speed * Time.deltaTime);  // Usar Vector3.right para moverse hacia adelante según la rotación actual
             yield return null;

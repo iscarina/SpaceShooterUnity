@@ -14,6 +14,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float timeBetweenLevels;
     [SerializeField] private float timeBetweenWaves;
 
+    [SerializeField] GameObject finalBoss;
+
     public static int deadEnemies;
 
     void Start()
@@ -33,6 +35,7 @@ public class Spawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenLevels);
             }
         }
+        StartCoroutine(FinalBoss());
     }
 
     IEnumerator SpawnOleadas(int levellIndex)
@@ -63,9 +66,23 @@ public class Spawner : MonoBehaviour
             GameObject enemyPrefab = enemies[Random.Range(0, enemies.Length)];
 
             Vector3 spawnPosition = new Vector3(transform.position.x, Random.Range(-4.43f, 4.43f), 0);
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            PoolManager.SpawnObject(enemyPrefab, spawnPosition, Quaternion.identity);
             yield return new WaitForSeconds(niveles[levellIndex].enemiesDelay[waveIndex]);
         }
+    }
+
+    IEnumerator FinalBoss()
+    {
+        textoOleadas.text = "FINAL BOSS !";
+        yield return new WaitForSeconds(3f);
+        finalBoss.SetActive(true);
+
+        while (finalBoss.activeInHierarchy)
+        {
+            yield return null;
+        }
+
+        Debug.Log("WIN");
     }
 
 }

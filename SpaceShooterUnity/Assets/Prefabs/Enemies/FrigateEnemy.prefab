@@ -274,6 +274,7 @@ MonoBehaviour:
   speed: 0.5
   shotTime: 5
   score: 0
+  SpriteVisual: {fileID: 393648857574176857}
   minTimeBetweenMove: 5
   maxTimeBetweenMove: 7
   spawnPoint: {fileID: 4757677374842943985}

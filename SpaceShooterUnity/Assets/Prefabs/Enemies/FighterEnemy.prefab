@@ -347,10 +347,10 @@ MonoBehaviour:
   health: 2
   speed: 4
   shotTime: 1
-  points: 10
+  score: 0
+  SpriteVisual: {fileID: 3788905951070544777}
   minTimeBetweenMove: 1
   maxTimeBetweenMove: 3
-  pointsUI: {fileID: 0}
   spawnPoint1: {fileID: 5788316106030650841}
   spawnPoint2: {fileID: 4092730506718304812}
   disparoPrefab: {fileID: 7160641805464620019, guid: 7b538c81aab7a444da5f6955d1971153, type: 3}
