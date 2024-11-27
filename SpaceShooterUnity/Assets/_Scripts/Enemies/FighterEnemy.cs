@@ -40,7 +40,7 @@ public class FighterEnemy : EnemyBase
         while(true)
         {
             int spawnPointIndex = Random.Range(0, 2);
-
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             if (spawnPointIndex == 0)
             {
                 PoolManager.SpawnObject(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);

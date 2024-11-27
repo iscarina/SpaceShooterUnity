@@ -451,10 +451,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41918f05c9fbb04fb050ffc992b0e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
-  maxHealth: 2
-  speed: 4
-  shotTime: 1
+  health: 3
+  maxHealth: 3
+  speed: 2.5
+  shotTime: 2
   score: 10
   SpriteVisual: {fileID: 3788905951070544777}
   minTimeBetweenMove: 1

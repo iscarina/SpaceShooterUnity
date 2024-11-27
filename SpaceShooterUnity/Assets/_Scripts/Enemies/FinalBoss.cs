@@ -70,7 +70,7 @@ public class FinalBoss : MonoBehaviour
         for (int burst = 0; burst < bursts; burst++) // Disparar múltiples ráfagas
         {
             float startAngle = -burstAngle / 2; // Ángulo inicial para esta ráfaga
-
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             for (int i = 0; i < projectilesPerBurst; i++)
             {
                 float currentAngle = startAngle + (angleStep * i);
@@ -93,6 +93,7 @@ public class FinalBoss : MonoBehaviour
     {
         for (int i = 0; i < projectilesPerBurst; i++)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             GameObject projectile = PoolManager.SpawnObject(wavePrefab, spawnPoint.position, Quaternion.identity);
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
 
@@ -140,6 +141,7 @@ public class FinalBoss : MonoBehaviour
 
         for (int i = 0; i < 3; i++) // Tres disparos
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             float currentAngle = startAngle + (angleStep * i);
             GameObject projectile = PoolManager.SpawnObject(wavePrefab, spawnPoint.position, Quaternion.identity);
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
@@ -158,6 +160,7 @@ public class FinalBoss : MonoBehaviour
     // Patrón 4: Rayo
     IEnumerator Pattern4_RayAttack(Transform spawnPoint)
     {
+        AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
         Vector3 adjustedPosition = spawnPoint.transform.position + new Vector3(-9.2f, 0, 0);
         GameObject ray = PoolManager.SpawnObject(rayPrefab, adjustedPosition, Quaternion.identity);
         ray.transform.SetParent(transform);

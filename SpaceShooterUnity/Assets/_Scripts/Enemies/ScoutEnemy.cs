@@ -53,6 +53,7 @@ public class ScoutEnemy : EnemyBase
 
         for (int i = 0; i < projectilesPerBurst; i++)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             float currentAngle = startAngle + (angleStep * i);
             ShootProjectile(currentAngle);
 

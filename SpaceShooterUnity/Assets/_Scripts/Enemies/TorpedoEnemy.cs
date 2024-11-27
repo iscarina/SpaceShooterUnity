@@ -50,7 +50,7 @@ public class TorpedoEnemy : EnemyBase
 
             yield return null;
         }
-
+        AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.Torpedo]);
         // Cargar hacia el jugador tomando como referencia el morro de la nave
         while (this.gameObject.activeInHierarchy)
         {

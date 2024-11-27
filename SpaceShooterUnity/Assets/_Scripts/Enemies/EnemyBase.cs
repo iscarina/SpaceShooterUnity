@@ -49,6 +49,7 @@ public class EnemyBase : MonoBehaviour
 
     private IEnumerator DestroyAfterAnimation()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.Die]);
         transform.GetComponent<BoxCollider2D>().enabled = false;
         foreach (Transform child in transform)
         {
@@ -72,6 +73,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DisparoPlayer"))
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.Hit]);
             TakeDamage(collision.gameObject.GetComponent<Disparo>().damage);
             PoolManager.ReturnObjectToPool(collision.gameObject);
             StartCoroutine(FlashRed());

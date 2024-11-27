@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public event LifeChangeHandler OnLifeChange;
 
     private float _life;
-    private float vidaMaxima = 20;
+    [SerializeField] private float vidaMaxima = 25f;
     public float life
     {
         get => _life;
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         OnLifeChange += UpdateLife;
-        life = 2;
+        life = vidaMaxima;
         score = 0;
 
         if (spriteRenderer == null)
@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && temporizador > ratioDisparo)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotPlayer]);
             PoolManager.SpawnObject(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
             PoolManager.SpawnObject(disparoPrefab, spawnPoint2.transform.position, Quaternion.identity);
 
@@ -175,6 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator FlashRed()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.Hit]);
         spriteRenderer.color = hitColor;
         yield return new WaitForSeconds(flashDuration);
         spriteRenderer.color = originalColor;
@@ -194,12 +196,11 @@ public class PlayerController : MonoBehaviour
     void RayDamage()
     {
         timeSinceLastDamage += Time.deltaTime;
-
         if (timeSinceLastDamage >= damageInterval)
         {
             // Aplicar daño
             life -= 1f;
-
+            StartCoroutine(FlashRed());
             // Resetear el temporizador
             timeSinceLastDamage = 0f;
         }
@@ -212,6 +213,7 @@ public class PlayerController : MonoBehaviour
             escudo.SetActive(true);
             tieneEscudo = true;
             PoolManager.ReturnObjectToPool(collision.gameObject);
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.PowerUp]);
         }
         else if (collision.gameObject.CompareTag("PickupVida"))
         {
@@ -219,17 +221,20 @@ public class PlayerController : MonoBehaviour
             {
                 life++;
                 PoolManager.ReturnObjectToPool(collision.gameObject);
+                AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.PowerUp]);
             }
         }
         else if (collision.gameObject.CompareTag("PickupVelocidad"))
         {
             ratioDisparo = ratioDisparo - 0.1f;
             PoolManager.ReturnObjectToPool(collision.gameObject);
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.PowerUp]);
         }
         else if (collision.gameObject.CompareTag("PickupRockets"))
         {
             pickUpRockets++;
             PoolManager.ReturnObjectToPool(collision.gameObject);
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.PowerUp]);
         }
 
     }

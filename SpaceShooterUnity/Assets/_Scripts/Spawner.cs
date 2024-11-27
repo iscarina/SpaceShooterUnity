@@ -48,7 +48,7 @@ public class Spawner : MonoBehaviour
     {
         for (int j = 0; j < niveles[levellIndex].waves; j++) // Oleadas
         {
-            textoOleadas.text = "Nivel " + (levellIndex + 1) + " - Oleada " + (j + 1);
+            textoOleadas.text = "Level " + (levellIndex + 1) + " - Wave " + (j + 1);
             yield return new WaitForSeconds(2f);
             textoOleadas.text = "";
 
@@ -80,7 +80,6 @@ public class Spawner : MonoBehaviour
     IEnumerator FinalBoss()
     {
         textoOleadas.text = "FINAL BOSS !";
-        yield return new WaitForSeconds(3f);
         textoOleadas.text = "GET REDY !";
         yield return new WaitForSeconds(3f);
         textoOleadas.text = "";

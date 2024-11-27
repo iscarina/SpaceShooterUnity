@@ -37,11 +37,12 @@ public class FrigateEnemy : EnemyBase
     {
         while (true)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             Vector3 adjustedPosition = spawnPoint.transform.position + new Vector3(-9.2f, 0, 0);
             GameObject ray = PoolManager.SpawnObject(disparoPrefab, adjustedPosition, Quaternion.identity);
             ray.transform.SetParent(transform);
 
-            StartCoroutine(ReturnRayToPoolAfterTime(ray, Random.Range(5f, 8f)));
+            StartCoroutine(ReturnRayToPoolAfterTime(ray, Random.Range(2f, 5f)));
 
             while (ray != null)
             {

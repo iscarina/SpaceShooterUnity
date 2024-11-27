@@ -37,6 +37,7 @@ public class BomberEnemie : EnemyBase
     {
         while (true)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotEnemy]);
             PoolManager.SpawnObject(disparoPrefab, spawnPoint.transform.position, Quaternion.identity);
 
             yield return new WaitForSeconds(shotTime);

@@ -47,6 +47,7 @@ public class PoolManager : MonoBehaviour
         if (pool == null)
         {
             Debug.Log("Trying to release an object that is not pooled" + obj.name);
+            Destroy(obj);
         }
         else
         {

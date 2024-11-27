@@ -380,7 +380,7 @@ MonoBehaviour:
   health: 6
   maxHealth: 6
   speed: 0.5
-  shotTime: 5
+  shotTime: 4
   score: 25
   SpriteVisual: {fileID: 393648857574176857}
   minTimeBetweenMove: 5

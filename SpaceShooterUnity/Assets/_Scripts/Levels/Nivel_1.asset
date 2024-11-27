@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Nivel_1
   m_EditorClassIdentifier: 
   enemiesPrefabs:
-  - {fileID: 5122121935616692653, guid: af300130117bb5f4ea240255324b35f6, type: 3}
-  waves: 3
+  - {fileID: 6293647256768859660, guid: a5ec01bdb549a6c449df6c44602cb82b, type: 3}
+  waves: 1
   enemiesNumber: 050000000a0000000c000000
   enemiesDelay:
   - 3
