@@ -14,7 +14,13 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float timeBetweenLevels;
     [SerializeField] private float timeBetweenWaves;
 
-    [SerializeField] GameObject finalBoss;
+    [SerializeField] private GameObject finalBoss;
+    [SerializeField] private GameObject finalBossEnemy1;
+    [SerializeField] private GameObject finalBossEnemy2;
+    [SerializeField] private GameObject finalBossEnemy3;
+
+    [SerializeField] private GameObject win;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     public static int deadEnemies;
 
@@ -75,14 +81,22 @@ public class Spawner : MonoBehaviour
     {
         textoOleadas.text = "FINAL BOSS !";
         yield return new WaitForSeconds(3f);
+        textoOleadas.text = "GET REDY !";
+        yield return new WaitForSeconds(3f);
+        textoOleadas.text = "";
+
         finalBoss.SetActive(true);
 
-        while (finalBoss.activeInHierarchy)
+        while (finalBossEnemy1 != null || finalBossEnemy2 != null || finalBossEnemy3 != null)
         {
-            yield return null;
+            yield return null;   
         }
 
-        Debug.Log("WIN");
+        yield return new WaitForSeconds(3f);
+
+        scoreText.text = "Score: " + PlayerController.Score;
+        finalBoss.SetActive(false);
+        win.SetActive(true);
     }
 
 }

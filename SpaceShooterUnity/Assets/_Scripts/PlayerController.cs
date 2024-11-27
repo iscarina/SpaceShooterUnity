@@ -56,7 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private int pickUpRockets = 0;
 
-    public static int score = 0;
+    private static int score;
+
+    public static int Score { get => score; set => score = value; }
 
     //Rayo
     private bool isOnRay = false;
@@ -66,7 +68,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         OnLifeChange += UpdateLife;
-        life = 20;
+        life = 2;
+        score = 0;
 
         if (spriteRenderer == null)
         {
@@ -84,6 +87,7 @@ public class PlayerController : MonoBehaviour
         {
             RayDamage();
         }
+        UpdateScore();
     }
 
     void Movimiento()
@@ -235,10 +239,35 @@ public class PlayerController : MonoBehaviour
         vidaTexto.text = "Vida: " + life;
         if (life <= 0)
         {
-            gameOver.SetActive(true);
-            Destroy(this.gameObject);
+            StartCoroutine(DestroyAfterAnimation());
         }
 
+    }
+
+    private IEnumerator DestroyAfterAnimation()
+    {
+        transform.GetComponent<BoxCollider2D>().enabled = false;
+        foreach (Transform child in transform)
+        {
+            if (child.name != "Die")
+            {
+                child.gameObject.SetActive(false);
+            }
+            else
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+        foreach (Transform child in transform)
+        {
+                child.gameObject.SetActive(false);
+        }
+
+        yield return new WaitForSeconds(1.5f);
+        gameOver.SetActive(true);
+        Destroy(this.gameObject);
     }
 
     void UpdateScore()

@@ -15,18 +15,23 @@ public class ScoutEnemy : EnemyBase
 
     private bool isShooting = true;
 
-    void Start()
-    {
-        StartCoroutine(ShootBurstRoutine());
-    }
+    //void Start()
+    //{
+    //    StartCoroutine(ShootBurstRoutine());
+    //}
 
     private void OnEnable()
     {
+        EnableEnemy();
         StartCoroutine(ShootBurstRoutine());
     }
 
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
         // Movimiento hacia adelante
         transform.Translate(Vector3.left * speed * Time.deltaTime); // Mover hacia la izquierda (ajustar según el diseño del juego)
     }

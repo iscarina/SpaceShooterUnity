@@ -7,6 +7,7 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("Basic Stats")]
     [SerializeField] protected float health = 1f;
+    [SerializeField] protected float maxHealth = 1f;
     [SerializeField] protected float speed;
 
     [SerializeField] protected float shotTime = 1f;
@@ -25,6 +26,7 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected float maxTimeBetweenMove;
 
     private Color originalColor;
+    protected bool isDead = false;
 
     public virtual void TakeDamage(float amount)
     {
@@ -37,9 +39,33 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Die()
     {
-        PlayerController.score += score;
+        isDead = true;
+
+        PlayerController.Score += score;
+
+        StartCoroutine(DestroyAfterAnimation());
+
+    }
+
+    private IEnumerator DestroyAfterAnimation()
+    {
+        transform.GetComponent<BoxCollider2D>().enabled = false;
+        foreach (Transform child in transform)
+        {
+            if (child.name != "Die")
+            {
+                child.gameObject.SetActive(false);
+            }
+            else
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+
         DropPowerUp();
-        Destroy(this.gameObject);
+        PoolManager.ReturnObjectToPool(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,6 +127,26 @@ public class EnemyBase : MonoBehaviour
             PoolManager.SpawnObject(powerUpPrefab, transform.position, Quaternion.identity);
         }
 
+    }
+
+    protected void EnableEnemy()
+    {
+        isDead = false;
+        SpriteVisual.GetComponent<SpriteRenderer>().color = Color.white;
+        health = maxHealth;
+
+        transform.GetComponent<BoxCollider2D>().enabled = true;
+        foreach (Transform child in transform)
+        {
+            if (child.name != "Die")
+            {
+                child.gameObject.SetActive(true);
+            }
+            else
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
     }
 
 }

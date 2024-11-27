@@ -15,11 +15,17 @@ public class BomberEnemie : EnemyBase
 
     private void OnEnable()
     {
+        EnableEnemy();
         SetNextMoveTime();
         StartCoroutine(Disparar());
     }
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
         if (Time.time >= nextMoveTime && !isMovingY)
         {

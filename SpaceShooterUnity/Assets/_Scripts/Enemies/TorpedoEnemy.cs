@@ -8,6 +8,7 @@ public class TorpedoEnemy : EnemyBase
     [SerializeField] private float aimDuration = 0.5f;    // Duración de tiempo que el enemigo apunta al jugador
 
     private Transform player;  // Referencia al jugador
+    private GameObject playerObject;  // Referencia al jugador
 
     //void Start()
     //{
@@ -17,8 +18,13 @@ public class TorpedoEnemy : EnemyBase
 
     void OnEnable()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        StartCoroutine(MoveAndCharge());
+        EnableEnemy();
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+            StartCoroutine(MoveAndCharge());
+        }
     }
 
     IEnumerator MoveAndCharge()
@@ -34,7 +40,7 @@ public class TorpedoEnemy : EnemyBase
 
         // Apuntar al jugador durante aimDuration segundos
         float aimEndTime = Time.time + aimDuration;
-        while (Time.time < aimEndTime)
+        while (Time.time < aimEndTime && player != null)
         {
             Vector3 directionToPlayer = player.position - transform.position;
             directionToPlayer.z = 0;
@@ -48,7 +54,10 @@ public class TorpedoEnemy : EnemyBase
         // Cargar hacia el jugador tomando como referencia el morro de la nave
         while (this.gameObject.activeInHierarchy)
         {
-            transform.Translate(Vector3.left * speed * Time.deltaTime);  // Usar Vector3.right para moverse hacia adelante según la rotación actual
+            if (!isDead)
+            {
+                transform.Translate(Vector3.left * speed * Time.deltaTime);  // Usar Vector3.right para moverse hacia adelante según la rotación actual
+            }
             yield return null;
         }
     }
