@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public event LifeChangeHandler OnLifeChange;
 
     private float _life;
-    [SerializeField] private float vidaMaxima = 25f;
+    [SerializeField] private float vidaMaxima = 30f;
     public float life
     {
         get => _life;
@@ -40,11 +40,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsUI;
     [SerializeField] private GameObject gameOver;
 
-    [Header("RED")]
+    [Header("Damage")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Color hitColor = Color.red;
     [SerializeField] private float flashDuration = 0.2f;
     private bool isInvulnerable = false;
+
+    [SerializeField] private Sprite spriteNormal;
+    [SerializeField] private Sprite spriteSlightDamaged;
+    [SerializeField] private Sprite spriteDamaged;
+    [SerializeField] private Sprite spriteVeryDamaged;
 
     private Color originalColor;
 
@@ -109,7 +114,7 @@ public class PlayerController : MonoBehaviour
 
         temporizador += 1 * Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.Space) && temporizador > ratioDisparo)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && temporizador > ratioDisparo)
         {
             AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.ShotPlayer]);
             PoolManager.SpawnObject(disparoPrefab, spawnPoint1.transform.position, Quaternion.identity);
@@ -161,6 +166,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                PoolManager.ReturnObjectToPool(collision.gameObject);
                 escudo.SetActive(false);
                 tieneEscudo = false;
             }
@@ -180,7 +186,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.color = hitColor;
         yield return new WaitForSeconds(flashDuration);
         spriteRenderer.color = originalColor;
-        yield return new WaitForSeconds(0.1f); //Tiempo cortesia para que sea mas justo.
+        yield return new WaitForSeconds(0.15f); //Tiempo cortesia para que sea mas justo.
 
         isInvulnerable = false;
     }
@@ -226,7 +232,14 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("PickupVelocidad"))
         {
-            ratioDisparo = ratioDisparo - 0.1f;
+            if (ratioDisparo > 0.2f)
+            {
+                ratioDisparo = ratioDisparo - 0.1f;
+            }
+            else
+            {
+                ratioDisparo = ratioDisparo - 0.01f;
+            }
             PoolManager.ReturnObjectToPool(collision.gameObject);
             AudioManager.Instance.PlaySFX(AudioManager.SOUNDS[AudioManager.SOUNDS_ENUM.PowerUp]);
         }
@@ -245,6 +258,22 @@ public class PlayerController : MonoBehaviour
         if (life <= 0)
         {
             StartCoroutine(DestroyAfterAnimation());
+        }
+        else if (life <= 22)
+        {
+            spriteRenderer.sprite = spriteSlightDamaged;
+            if (life <= 15)
+            {
+                spriteRenderer.sprite = spriteDamaged;
+                if (life <= 8)
+                {
+                    spriteRenderer.sprite = spriteVeryDamaged;
+                }
+            }
+        }
+        else
+        {
+            spriteRenderer.sprite = spriteNormal;
         }
 
     }

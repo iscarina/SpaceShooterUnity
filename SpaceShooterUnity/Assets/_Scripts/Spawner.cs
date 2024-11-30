@@ -80,8 +80,9 @@ public class Spawner : MonoBehaviour
     IEnumerator FinalBoss()
     {
         textoOleadas.text = "FINAL BOSS !";
+        yield return new WaitForSeconds(2f);
         textoOleadas.text = "GET REDY !";
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         textoOleadas.text = "";
 
         finalBoss.SetActive(true);

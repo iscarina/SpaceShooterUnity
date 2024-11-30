@@ -125,7 +125,7 @@ MonoBehaviour:
   damage: 2
   direccion: {x: -1, y: 0, z: 0}
   oscilacionFrecuencia: 6
-  oscilacionAmplitud: 0.02
+  oscilacionAmplitud: 0.1
 --- !u!61 &9118085546467546998
 BoxCollider2D:
   m_ObjectHideFlags: 0

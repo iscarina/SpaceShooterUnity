@@ -20,19 +20,19 @@ public class PowerUpManager : MonoBehaviour
     {
         float perc = Random.value;
 
-        if (perc < 0.025f)
+        if (perc < 0.01f)
         {
             return powerUps[0];
         }
-        else if (perc < 0.05f)
+        else if (perc < 0.02f)
         {
             return powerUps[1];
         }
-        else if (perc <  0.2f)
+        else if (perc <  0.10f)
         {
             return powerUps[2];
         }
-        else if (perc < 0.3f)
+        else if (perc < 0.18f)
         {
             return powerUps[3];
         }
