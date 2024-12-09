@@ -68,8 +68,10 @@ public class PlayerController : MonoBehaviour
     //Rayo
     private bool isOnRay = false;
     private float timeSinceLastDamage = 0f; 
-    private float damageInterval = 0.3f; 
+    private float damageInterval = 0.3f;
 
+
+    private bool isDead = false;
     void Start()
     {
         OnLifeChange += UpdateLife;
@@ -85,14 +87,17 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Movimiento();
-        DelimitaMovimiento();
-        Disparar();
-        if (isOnRay)
+        if (!isDead)
         {
-            RayDamage();
+            Movimiento();
+            DelimitaMovimiento();
+            Disparar();
+            if (isOnRay)
+            {
+                RayDamage();
+            }
+            UpdateScore();
         }
-        UpdateScore();
     }
 
     void Movimiento()
@@ -257,6 +262,7 @@ public class PlayerController : MonoBehaviour
         vidaTexto.text = "Vida: " + life;
         if (life <= 0)
         {
+            isDead = true;
             StartCoroutine(DestroyAfterAnimation());
         }
         else if (life <= 22)

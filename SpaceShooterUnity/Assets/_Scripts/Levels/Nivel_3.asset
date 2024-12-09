@@ -16,10 +16,9 @@ MonoBehaviour:
   - {fileID: 4564701832499194447, guid: adece54cd4d6b2244883d94e5dec5a8e, type: 3}
   - {fileID: 6624966763568257719, guid: 943228db1e1db734697b3cc6ffd802e9, type: 3}
   - {fileID: 5122121935616692653, guid: af300130117bb5f4ea240255324b35f6, type: 3}
-  waves: 4
-  enemiesNumber: 0c0000000f0000001100000012000000
+  waves: 3
+  enemiesNumber: 0c0000000f00000012000000
   enemiesDelay:
-  - 2
   - 1.5
-  - 1
+  - 1.5
   - 1
