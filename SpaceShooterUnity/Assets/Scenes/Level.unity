@@ -6266,7 +6266,7 @@ PrefabInstance:
       objectReference: {fileID: 1936259444}
     - target: {fileID: 5519470264146979722, guid: ab78c620efeebd04591d191846b34389, type: 3}
       propertyPath: vidaMaxima
-      value: 2
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5519470264146979722, guid: ab78c620efeebd04591d191846b34389, type: 3}
       propertyPath: ratioDisparo
